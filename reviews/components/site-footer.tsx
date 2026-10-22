@@ -12,7 +12,7 @@ export function SiteFooter() {
         <div className="flex items-center gap-2 text-white font-display font-bold">
           
         
-          Bee Bizzi <span className="text-primary">WP Plugins</span>
+          Bee Bizzi Ltd - <span className="text-primary">WP Plugins</span>
         </div>
         <p className="text-sm text-white/60">
           © {year} <a href="https://beebizzi.co.uk/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Bee Bizzi Ltd</a> - WP Plugins. All rights reserved.
