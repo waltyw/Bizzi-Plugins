@@ -26,7 +26,7 @@ export function SiteHeader() {
        <Link href="/" className="flex items-center">
   <img src="/favicon.svg" alt="Bizzi Reviews" className="h-12 w-auto" />
 
-          &nbsp; Bizzi <span className="text-primary">Reviews Pro</span>
+          &nbsp; Bizzi <span className="text-primary"> Reviews Pro</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
           {links.map((l: any) => (
