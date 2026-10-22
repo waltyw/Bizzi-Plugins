@@ -1,0 +1,32 @@
+{
+  "name": "Bizzi Reviews Pro",
+  "slug": "bizzi-reviews-pro",
+  "version": "1.1.0",
+  "requires": "5.8",
+  "tested": "6.6",
+  "requires_php": "7.4",
+  "last_updated": "2026-10-21",
+  "zip": "bizzi-reviews-pro-v1.1.0.zip",
+  "free_version": "1.1.1",
+  "free_zip": "bizzi-reviews-v1.1.1.zip",
+  "description": "Collect, moderate and display Google, Facebook, WooCommerce and manual reviews with beautiful widgets, star badges and SEO schema.",
+  "changelog": [
+    {
+      "version": "1.1.0",
+      "date": "2026-10-21",
+      "notes": [
+        "Pro is now an add-on for the free Bizzi Reviews plugin (no review limits in either). Pro £29/year, Agency £99/year.",
+        "Server-side licence activation with automatic daily checks.",
+        "Automatic updates from the Bizzi Reviews update server.",
+        "New in-dashboard Help page with step-by-step guides.",
+        "Gutenberg blocks now render live previews on the front end.",
+        "Security hardening: stricter input validation, escaped output, stronger token encryption."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-09-01",
+      "notes": ["Initial release."]
+    }
+  ]
+}
