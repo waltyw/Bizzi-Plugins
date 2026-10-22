@@ -23,8 +23,9 @@ export function SiteHeader() {
       className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-black/5"
     >
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-black font-display font-bold text-xl">
-          <Star className="w-6 h-6 fill-primary text-primary" />
+       <Link href="/" className="flex items-center">
+  <img src="/favicon.svg" alt="Bizzi Reviews" className="h-9 w-auto" />
+</Link>
           Bizzi <span className="text-primary">Reviews Pro</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
