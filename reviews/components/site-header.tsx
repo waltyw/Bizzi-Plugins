@@ -8,11 +8,12 @@ import { motion } from 'framer-motion';
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const links = [
-    { href: '#features', label: 'Features' },
-    { href: '#widgets', label: 'Widgets' },
-    { href: '#shortcodes', label: 'Shortcodes' },
-    { href: '#pricing', label: 'Pricing' },
-    { href: '#download', label: 'Download' },
+    { href: '/#features', label: 'Features' },
+    { href: '/#widgets', label: 'Widgets' },
+    { href: '/#shortcodes', label: 'Shortcodes' },
+    { href: '/#pricing', label: 'Pricing' },
+    { href: '/#download', label: 'Download' },
+    { href: '/help', label: 'Help' },
   ];
 
   return (
@@ -33,7 +34,7 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-        <a href="#download" className="hidden md:inline-flex btn-brand !py-2.5 !px-5">
+        <a href="/#download" className="hidden md:inline-flex btn-brand !py-2.5 !px-5">
           Download Free
         </a>
         <button className="md:hidden" aria-label="Toggle menu" onClick={() => setOpen(!open)}>

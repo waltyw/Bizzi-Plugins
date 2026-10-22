@@ -17,8 +17,9 @@ export function SiteFooter() {
           © {year} Bizzi WP Plugins. All rights reserved.
         </p>
         <div className="flex gap-6 text-sm text-white/70">
-          <a href="#features" className="hover:text-primary transition-colors">Features</a>
-          <a href="#download" className="hover:text-primary transition-colors">Download</a>
+          <a href="/#features" className="hover:text-primary transition-colors">Features</a>
+          <a href="/#download" className="hover:text-primary transition-colors">Download</a>
+          <a href="/help" className="hover:text-primary transition-colors">Help</a>
         </div>
       </div>
     </footer>
