@@ -10,11 +10,12 @@ export function SiteFooter() {
     <footer className="bg-black text-white py-12">
       <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-white font-display font-bold">
-          <Star className="w-5 h-5 fill-primary text-primary" />
-          Bizzi <span className="text-primary">WP Plugins</span>
+          
+        
+          Bee Bizzi <span className="text-primary">WP Plugins</span>
         </div>
         <p className="text-sm text-white/60">
-          © {year} Bizzi WP Plugins. All rights reserved.
+          © {year} Bee Bizzi Ltd - WP Plugins. All rights reserved.
         </p>
         <div className="flex gap-6 text-sm text-white/70">
           <a href="/#features" className="hover:text-primary transition-colors">Features</a>
