@@ -25,7 +25,7 @@ export function SiteHeader() {
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
        <Link href="/" className="flex items-center">
   <img src="/favicon.svg" alt="Bizzi Reviews" className="h-9 w-auto" />
-</Link>
+
           Bizzi <span className="text-primary">Reviews Pro</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
