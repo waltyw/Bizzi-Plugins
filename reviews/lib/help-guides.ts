@@ -26,7 +26,7 @@ export const GUIDES: Guide[] = [
         'Open Bizzi Reviews → Sources & API and connect Google (see “Connect Google reviews”), or add a testimonial under Bizzi Reviews → Add Review.',
         'On the Dashboard click Sync to pull your latest Google reviews.',
         'Check Bizzi Reviews → All Reviews to see what was imported.',
-        'Edit any page, add the “Bizzi Reviews Carousel” block (or paste [bizzi_reviews]) and publish.',
+        'Edit any page, add the “Bizzi Reviews Carousel” block (or drag in the “Bizzi Reviews” Elementor widget) and publish.',
         'Open Settings → Widget Styling to match your brand colours.',
       ] },
       { type: 'tip', text: 'Reviews sync automatically once a day after the first connection, so new reviews appear on their own.' },
@@ -107,7 +107,7 @@ export const GUIDES: Guide[] = [
   {
     slug: 'add-widget',
     title: 'Add a widget to a page',
-    summary: 'Use blocks or shortcodes to place a carousel, single review or combined rating.',
+    summary: 'Use blocks, Elementor widgets or shortcodes to place a carousel, single review or combined rating.',
     body: [
       { type: 'h', text: 'Using the block editor' },
       { type: 'steps', items: [
@@ -116,11 +116,43 @@ export const GUIDES: Guide[] = [
         'Use the block settings on the right to change source, number of reviews and colours.',
         'Update / Publish the page.',
       ] },
-      { type: 'h', text: 'Using shortcodes (any editor or page builder)' },
-      { type: 'p', text: 'Add a Shortcode block (or a text/shortcode widget in Elementor, Divi, etc.) and paste one of these:' },
+      { type: 'h', text: 'Using Elementor' },
+      { type: 'p', text: 'Bizzi Reviews has native Elementor widgets — no shortcodes needed. See “Elementor widgets” for the full guide.' },
+      { type: 'h', text: 'Using shortcodes (other page builders)' },
+      { type: 'p', text: 'Add a Shortcode block (or a text/shortcode widget in Divi, Beaver Builder, etc.) and paste one of these:' },
       { type: 'code', text: '[bizzi_reviews]                       ← review carousel\n[bizzi_reviews layout="single"]       ← one featured review\n[bizzi_single_review id="12"]         ← a specific review\n[bizzi_combined_rating]               ← overall rating summary' },
       { type: 'p', text: 'Pro adds grid, list, wall and floating badge layouts: layout="grid", layout="list", layout="wall" and [bizzi_rating_badge].' },
       { type: 'tip', text: 'You can find a review’s ID in Bizzi Reviews → All Reviews.' },
+    ],
+  },
+  {
+    slug: 'elementor',
+    title: 'Elementor widgets',
+    summary: 'Drag Bizzi Reviews widgets into any Elementor page and style them in the panel.',
+    body: [
+      { type: 'p', text: 'With Elementor active, Bizzi Reviews adds its own widget category. The widgets render live in the editor, so you see exactly what visitors will see.' },
+      { type: 'h', text: 'Add a widget' },
+      { type: 'steps', items: [
+        'Edit a page with Elementor.',
+        'In the widget panel search for “Bizzi” (or scroll to the Bizzi Reviews category).',
+        'Drag a widget onto the page and adjust it in the Content tab.',
+        'Click Publish / Update.',
+      ] },
+      { type: 'table', head: ['Widget', 'What it shows'], rows: [
+        ['Bizzi Reviews', 'A carousel of reviews (grid, list and wall with Pro)'],
+        ['Single Review', 'One review you pick from a searchable list'],
+        ['Combined Rating', 'Your overall star rating and review count'],
+        ['Rating Badge (Pro)', 'A star badge, inline or floating in a corner'],
+      ] },
+      { type: 'h', text: 'Content options' },
+      { type: 'list', items: [
+        'Source, number of reviews, minimum rating, date range and keyword filters.',
+        'Columns per device (desktop, tablet, mobile), autoplay and slide speed.',
+        'Show or hide stars, review text, names, photos, dates and source, plus a text length limit.',
+      ] },
+      { type: 'h', text: 'Style tab' },
+      { type: 'p', text: 'Set primary, star, text and background colours, card corner radius, padding and shadow, plus font and font size. These override your site-wide Widget Styling for that widget only.' },
+      { type: 'tip', text: 'If a widget shows a dashed orange box in the editor, no reviews match its filters yet. Widen the filters or sync your reviews — the box never appears to visitors.' },
     ],
   },
   {
