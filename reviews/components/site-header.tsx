@@ -25,7 +25,7 @@ export function SiteHeader() {
     >
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 text-black font-display font-bold text-xl">
-          <Image src="/bizzi-logo.png" alt="Bizzi Reviews logo" width={36} height={36} className="w-9 h-9" priority />
+          <Image src="/bizzi-logo.png" alt="Bizzi Reviews logo" width={36} height={36} className="w-12 h-12" priority />
           Bizzi <span className="text-primary">Reviews Pro</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
