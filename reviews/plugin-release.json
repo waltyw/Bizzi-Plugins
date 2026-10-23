@@ -1,0 +1,61 @@
+{
+  "name": "Bizzi Reviews Pro",
+  "slug": "bizzi-reviews-pro",
+  "version": "1.1.3",
+  "requires": "5.8",
+  "tested": "7.1",
+  "requires_php": "7.4",
+  "last_updated": "2026-10-23",
+  "zip": "bizzi-reviews-pro-v1.1.3.zip",
+  "free_version": "1.3.3",
+  "free_zip": "bizzi-reviews-v1.3.3.zip",
+  "description": "Collect, moderate and display Google, Facebook, WooCommerce and manual reviews with beautiful widgets, star badges and SEO schema.",
+  "changelog": [
+    {
+      "version": "1.1.3",
+      "date": "2026-10-23",
+      "notes": [
+        "Facebook: moved to Graph API v23.0 (v19.0 has been retired by Meta).",
+        "Facebook: a Page admin's user token is now swapped for the Page token automatically.",
+        "Facebook: Recommendations (positive/negative) are imported when there is no star rating.",
+        "Facebook: errors now show Facebook's own message and what to fix, instead of only 'API returned status 403'."
+      ]
+    },
+    {
+      "version": "1.1.2",
+      "date": "2026-10-23",
+      "notes": [
+        "Plugin Check clean-up: all template and admin-screen variables are now prefixed.",
+        "Free plugin 1.3.3 and Pro 1.1.2 pass Plugin Check with no errors or warnings in the code-review, prefixing, database, query and escaping checks."
+      ]
+    },
+    {
+      "version": "1.1.1",
+      "date": "2026-10-23",
+      "notes": [
+        "Tested up to WordPress 7.1.",
+        "Security: all template output is now late-escaped with wp_kses allow-lists, in line with WordPress.org Plugin Check.",
+        "Free plugin 1.3.2 passes the official Plugin Check with no errors."
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-10-21",
+      "notes": [
+        "Pro is now an add-on for the free Bizzi Reviews plugin (no review limits in either). Pro £29/year, Agency £99/year.",
+        "Server-side licence activation with automatic daily checks.",
+        "Automatic updates from the Bizzi Reviews update server.",
+        "New in-dashboard Help page with step-by-step guides.",
+        "Gutenberg blocks now render live previews on the front end.",
+        "Security hardening: stricter input validation, escaped output, stronger token encryption."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-09-01",
+      "notes": [
+        "Initial release."
+      ]
+    }
+  ]
+}

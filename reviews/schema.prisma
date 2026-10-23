@@ -1,0 +1,52 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+}
+
+model Download {
+  id        Int      @id @default(autoincrement())
+  ip        String   @default("")
+  userAgent String   @default("") @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("downloads")
+}
+
+model License {
+  id                   Int      @id @default(autoincrement())
+  licenseKey           String   @unique @map("license_key")
+  plan                 String
+  email                String   @default("")
+  country              String   @default("")
+  currency             String   @default("")
+  amount               Int      @default(0)
+  status               String   @default("active")
+  note                 String   @default("")
+  stripeSessionId      String   @unique @map("stripe_session_id")
+  stripeCustomerId     String   @default("") @map("stripe_customer_id")
+  stripeSubscriptionId String   @default("") @map("stripe_subscription_id")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+  expiresAt            DateTime? @map("expires_at")
+  activations          LicenseActivation[]
+
+  @@index([stripeSubscriptionId])
+  @@map("licenses")
+}
+
+model LicenseActivation {
+  id            Int      @id @default(autoincrement())
+  licenseId     Int      @map("license_id")
+  license       License  @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+  siteUrl       String   @map("site_url")
+  createdAt     DateTime @default(now()) @map("created_at")
+  lastCheckedAt DateTime @default(now()) @map("last_checked_at")
+
+  @@unique([licenseId, siteUrl])
+  @@map("license_activations")
+}

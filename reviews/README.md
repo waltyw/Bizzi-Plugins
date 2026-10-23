@@ -21,6 +21,8 @@ Sells Bizzi Reviews Pro (Stripe subscriptions with country-specific prices), iss
    | `STRIPE_WEBHOOK_SECRET` | `whsec_...` from step 5 |
    | `NEXTAUTH_URL` | `https://bizziplugins.co.uk` |
    | `ADMIN_PASSWORD` | a long password for `/admin` |
+   | `ADMIN_2FA_EMAIL` | `ian@bizziplugins.co.uk` (receives the sign-in code) |
+   | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` / `SMTP_FROM` | outgoing mail settings for the mailbox that sends the code |
 5. **Stripe webhook** – Developers → Webhooks → Add endpoint `https://bizziplugins.co.uk/api/webhooks/stripe` with events `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`. Copy the signing secret into `STRIPE_WEBHOOK_SECRET` and redeploy.
 6. **Domain** – add your domain in Vercel → Settings → Domains.
 
@@ -38,6 +40,6 @@ The WordPress plugins are set to `https://bizziplugins.co.uk`. If you ever chang
 
 ## Free licences
 
-Go to `https://bizziplugins.co.uk/admin`, sign in with `ADMIN_PASSWORD`, and use **Issue a free licence** (Pro or Agency, 1 month to lifetime). Free keys work exactly like paid ones and can be revoked or reactivated from the same page.
+Go to `https://bizziplugins.co.uk/admin`, sign in with `ADMIN_PASSWORD` plus the 6-digit code emailed to `ADMIN_2FA_EMAIL`, and use **Issue a free licence** (Pro or Agency, 1 month to lifetime). Free keys work exactly like paid ones and can be revoked or reactivated from the same page.
 
 If you already ran `prisma db push`, run it again once to add the new `note` column.

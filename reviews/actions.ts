@@ -1,0 +1,102 @@
+'use server';
+
+import { randomUUID } from 'crypto';
+import { cookies, headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { prisma } from '@/lib/prisma';
+import { generateLicenseKey } from '@/lib/stripe';
+import { isPlan } from '@/lib/pricing';
+import { clientIp, rateLimit } from '@/lib/rate-limit';
+import { ADMIN_COOKIE, adminToken, isAdmin, passwordMatches } from '@/lib/admin-auth';
+import { clearPendingTwoFactor, codeMatches, hasPendingTwoFactor, mailConfigured, startTwoFactor } from '@/lib/admin-2fa';
+
+const DURATIONS: Record<string, number | null> = { '1m': 31, '3m': 92, '1y': 368, '2y': 733, lifetime: null };
+
+export async function login(formData: FormData) {
+  let outcome = '/admin';
+  try {
+    const ip = clientIp(await headers());
+    const password = String(formData.get('password') ?? '');
+    if (!rateLimit(`admin-login:${ip}`, 5, 15 * 60_000)) outcome = '/admin?error=locked';
+    else if (!passwordMatches(password)) outcome = '/admin?error=wrong';
+    else if (!mailConfigured()) outcome = '/admin?error=mailsetup';
+    else await startTwoFactor();
+  } catch (err) {
+    console.error('Admin login failed', err);
+    outcome = '/admin?error=mailfail';
+  }
+  redirect(outcome);
+}
+
+export async function verifyCode(formData: FormData) {
+  let outcome = '/admin';
+  try {
+    const ip = clientIp(await headers());
+    if (!rateLimit(`admin-2fa:${ip}`, 5, 15 * 60_000)) {
+      await clearPendingTwoFactor();
+      outcome = '/admin?error=locked';
+    } else if (!(await hasPendingTwoFactor())) outcome = '/admin?error=expired';
+    else if (!(await codeMatches(String(formData.get('code') ?? '')))) outcome = '/admin?error=badcode';
+    else {
+      await clearPendingTwoFactor();
+      (await cookies()).set(ADMIN_COOKIE, adminToken(), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/admin',
+        maxAge: 60 * 60 * 12,
+      });
+    }
+  } catch (err) {
+    console.error('Admin 2FA failed', err);
+    outcome = '/admin?error=server';
+  }
+  redirect(outcome);
+}
+
+export async function cancelTwoFactor() {
+  await clearPendingTwoFactor();
+  redirect('/admin');
+}
+
+export async function logout() {
+  (await cookies()).delete({ name: ADMIN_COOKIE, path: '/admin' });
+  redirect('/admin');
+}
+
+export async function issueLicence(formData: FormData) {
+  if (!(await isAdmin())) redirect('/admin');
+  const plan = String(formData.get('plan') ?? 'pro');
+  const duration = String(formData.get('duration') ?? '1y');
+  const email = String(formData.get('email') ?? '').trim().slice(0, 200);
+  const note = String(formData.get('note') ?? '').trim().slice(0, 120);
+  if (!isPlan(plan) || !(duration in DURATIONS)) redirect('/admin?error=invalid');
+
+  const days = DURATIONS[duration];
+  const licence = await prisma.license.create({
+    data: {
+      licenseKey: generateLicenseKey(plan),
+      plan,
+      email,
+      note,
+      amount: 0,
+      status: 'active',
+      expiresAt: days === null ? null : new Date(Date.now() + days * 86_400_000),
+      stripeSessionId: `free_${randomUUID()}`,
+    },
+  });
+  console.log('Admin issued free licence', licence.id, plan, duration);
+  revalidatePath('/admin');
+  redirect(`/admin?issued=${encodeURIComponent(licence.licenseKey)}`);
+}
+
+export async function setLicenceStatus(formData: FormData) {
+  if (!(await isAdmin())) redirect('/admin');
+  const id = Number(formData.get('id'));
+  const status = String(formData.get('status'));
+  if (!Number.isInteger(id) || !['active', 'revoked'].includes(status)) redirect('/admin?error=invalid');
+  await prisma.license.update({ where: { id }, data: { status } });
+  revalidatePath('/admin');
+  redirect('/admin');
+}
