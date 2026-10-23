@@ -14,7 +14,7 @@ export function SiteFooter() {
           Bizzi <span className="text-primary">WP Plugins</span>
         </div>
         <p className="text-sm text-white/60">
-          © {year} <a href="https://beebizzi.co.uk/" target="_blank" className="flex items-center gap-2 text-black font-display font-bold text-xl>Bee Bizzi LTD</a>- WP Plugins. All rights reserved.
+          © {year} Bizzi WP Plugins is part of <a href="https://beebizzi.co.uk/" target="_blank" alt="Bee Bizzi Ltd" className="h-8 w-auto"> Bee Bizzi LTD</a>. All rights reserved.
         </p>
         <div className="flex gap-6 text-sm text-white/70">
           <a href="/#features" className="hover:text-primary transition-colors">Features</a>
