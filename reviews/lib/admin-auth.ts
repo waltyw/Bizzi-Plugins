@@ -9,7 +9,7 @@ export function adminConfigured(): boolean {
 
 /** Session token derived from the password, so changing ADMIN_PASSWORD signs everyone out. */
 export function adminToken(): string {
-  return createHmac('sha256', process.env.ADMIN_PASSWORD ?? '').update('bizzi-admin-session-v1').digest('hex');
+  return createHmac('sha256', process.env.ADMIN_PASSWORD ?? '').update('bizzi-admin-session-v2-2fa').digest('hex');
 }
 
 function safeEqual(a: string, b: string): boolean {
