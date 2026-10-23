@@ -13,18 +13,26 @@ import { ADMIN_COOKIE, adminToken, isAdmin, passwordMatches } from '@/lib/admin-
 const DURATIONS: Record<string, number | null> = { '1m': 31, '3m': 92, '1y': 368, '2y': 733, lifetime: null };
 
 export async function login(formData: FormData) {
-  const ip = clientIp(await headers());
-  if (!rateLimit(`admin-login:${ip}`, 5, 15 * 60_000)) redirect('/admin?error=locked');
-  const password = String(formData.get('password') ?? '');
-  if (!passwordMatches(password)) redirect('/admin?error=wrong');
-  (await cookies()).set(ADMIN_COOKIE, adminToken(), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/admin',
-    maxAge: 60 * 60 * 12,
-  });
-  redirect('/admin');
+  let outcome = '/admin';
+  try {
+    const ip = clientIp(await headers());
+    const password = String(formData.get('password') ?? '');
+    if (!rateLimit(`admin-login:${ip}`, 5, 15 * 60_000)) outcome = '/admin?error=locked';
+    else if (!passwordMatches(password)) outcome = '/admin?error=wrong';
+    else {
+      (await cookies()).set(ADMIN_COOKIE, adminToken(), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/admin',
+        maxAge: 60 * 60 * 12,
+      });
+    }
+  } catch (err) {
+    console.error('Admin login failed', err);
+    outcome = '/admin?error=server';
+  }
+  redirect(outcome);
 }
 
 export async function logout() {

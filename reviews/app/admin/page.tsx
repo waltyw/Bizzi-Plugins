@@ -12,6 +12,7 @@ const ERRORS: Record<string, string> = {
   wrong: 'Incorrect password.',
   locked: 'Too many attempts. Try again in 15 minutes.',
   invalid: 'That request was not valid.',
+  server: 'Sign in failed on the server. Check the function logs in your hosting dashboard.',
 };
 
 const field = 'w-full rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary';
@@ -49,11 +50,28 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     );
   }
 
-  const licences = await prisma.license.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 100,
-    include: { _count: { select: { activations: true } } },
-  });
+  let licences;
+  try {
+    licences = await prisma.license.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+      include: { _count: { select: { activations: true } } },
+    });
+  } catch (err) {
+    const e = err as { code?: string; message?: string };
+    console.error('Admin: could not load licences', e?.code, e?.message);
+    const detail = String(e?.message ?? '').split('\n').filter(Boolean).pop()?.slice(0, 300) ?? '';
+    return (
+      <Shell>
+        <h1 className="font-display text-2xl font-extrabold mb-2">Database problem</h1>
+        <p className="text-sm text-muted-foreground mb-3">
+          You are signed in, but the licence list could not be loaded from the database. Check that <code className="font-mono">DATABASE_URL</code> and <code className="font-mono">DIRECT_URL</code> are set in your hosting environment, and run <code className="font-mono">supabase-repair.sql</code> in the Supabase SQL editor to add any missing tables or columns.
+        </p>
+        <p className="text-xs font-mono bg-black/5 rounded-lg p-3 break-words mb-4">{e?.code ? `${e.code}: ` : ''}{detail || 'Unknown error'}</p>
+        <form action={logout}><button type="submit" className="btn-brand w-full">Sign out</button></form>
+      </Shell>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-brand-fade-soft">
