@@ -16,7 +16,7 @@ export function HeroSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white text-black rounded-full text-sm font-semibold mb-6 shadow-sm">
             <Star className="w-4 h-4 fill-primary text-primary" />
-            WordPress Plugin v1.2.0 • Free
+            WordPress Plugin v1.3.0 • Free
           </div>
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
             Your reviews. <span className="text-primary">Your site.</span> No monthly fees.
