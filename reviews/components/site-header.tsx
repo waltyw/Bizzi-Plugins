@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Star, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 export function SiteHeader() {
@@ -23,10 +24,9 @@ export function SiteHeader() {
       className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-black/5"
     >
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-       <Link href="/" className="flex items-center">
-  <img src="/favicon.svg" alt="Bizzi Reviews" className="h-12 w-auto" />
-
-          &nbsp; Bizzi <span className="text-primary"> Reviews Pro</span>
+        <Link href="/" className="flex items-center gap-2 text-black font-display font-bold text-xl">
+          <Image src="/bizzi-logo.png" alt="Bizzi Reviews logo" width={36} height={36} className="w-9 h-9" priority />
+          Bizzi <span className="text-primary">Reviews Pro</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
           {links.map((l: any) => (

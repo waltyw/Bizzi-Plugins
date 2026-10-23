@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Star } from 'lucide-react';
+import Image from 'next/image';
 
 export function SiteFooter() {
   const [year, setYear] = useState('2026');
@@ -10,12 +10,11 @@ export function SiteFooter() {
     <footer className="bg-black text-white py-12">
       <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-white font-display font-bold">
-          
-        
-          Bee Bizzi Ltd - <span className="text-primary">WP Plugins</span>
+          <Image src="/bizzi-logo.png" alt="Bizzi Reviews logo" width={32} height={32} className="w-8 h-8" />
+          Bizzi <span className="text-primary">WP Plugins</span>
         </div>
         <p className="text-sm text-white/60">
-          © {year} <a href="https://beebizzi.co.uk/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Bee Bizzi Ltd</a> - WP Plugins. All rights reserved.
+          © {year} Bizzi WP Plugins. All rights reserved.
         </p>
         <div className="flex gap-6 text-sm text-white/70">
           <a href="/#features" className="hover:text-primary transition-colors">Features</a>
