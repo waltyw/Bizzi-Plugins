@@ -16,8 +16,9 @@ export const metadata: Metadata = {
   description: 'Aggregate and display reviews from Google, Facebook, WooCommerce & more with beautiful widgets. Boost trust with social proof.',
   metadataBase: new URL(process.env.NEXTAUTH_URL ?? 'http://localhost:3000'),
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
+    icon: '/bizzi-logo.png',
+    shortcut: '/bizzi-logo.png',
+    apple: '/bizzi-logo.png',
   },
   openGraph: {
     title: 'Bizzi Reviews Pro',
@@ -29,6 +30,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script src="https://apps.abacus.ai/chatllm/appllm-lib.js" />
+      </head>
       <body className={`${dmSans.variable} ${jakartaSans.variable} ${jetbrainsMono.variable} font-sans`} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}
