@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { KeyRound, LogOut, ShieldCheck } from 'lucide-react';
+import { KeyRound, LogOut, MailCheck, ShieldCheck } from 'lucide-react';
+import { hasPendingTwoFactor, maskedEmail } from '@/lib/admin-2fa';
 import { prisma } from '@/lib/prisma';
 import { adminConfigured, isAdmin } from '@/lib/admin-auth';
 import { CopyKey } from '@/components/copy-key';
-import { issueLicence, login, logout, setLicenceStatus } from './actions';
+import { cancelTwoFactor, issueLicence, login, logout, setLicenceStatus, verifyCode } from './actions';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { title: 'Admin · Bizzi Reviews', robots: { index: false, follow: false } };
@@ -13,6 +14,10 @@ const ERRORS: Record<string, string> = {
   locked: 'Too many attempts. Try again in 15 minutes.',
   invalid: 'That request was not valid.',
   server: 'Sign in failed on the server. Check the function logs in your hosting dashboard.',
+  badcode: 'That code is not correct. Check the latest email and try again.',
+  expired: 'Your code has expired. Sign in again to get a new one.',
+  mailsetup: 'Two-factor email is not set up. Add the SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS and SMTP_FROM environment variables and redeploy.',
+  mailfail: 'The sign-in code email could not be sent. Check the SMTP settings and your hosting logs.',
 };
 
 const field = 'w-full rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary';
@@ -32,6 +37,26 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         <p className="text-muted-foreground text-sm">
           Add an <code className="font-mono">ADMIN_PASSWORD</code> environment variable (at least 8 characters) and redeploy to enable this page.
         </p>
+      </Shell>
+    );
+  }
+
+  if (!(await isAdmin()) && (await hasPendingTwoFactor())) {
+    return (
+      <Shell>
+        <MailCheck className="w-10 h-10 text-primary mb-4" />
+        <h1 className="font-display text-2xl font-extrabold mb-2">Check your email</h1>
+        <p className="text-sm text-muted-foreground mb-6">
+          We sent a 6-digit code to <span className="font-semibold text-foreground" suppressHydrationWarning>{maskedEmail()}</span>. It expires in 10 minutes.
+        </p>
+        <form action={verifyCode} className="space-y-4">
+          <input type="text" name="code" required inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]{6,7}" maxLength={7} placeholder="123456" className={`${field} text-center text-2xl tracking-[0.4em] font-mono`} />
+          {errorText && <p className="text-sm text-red-600">{errorText}</p>}
+          <button type="submit" className="btn-brand w-full">Verify and sign in</button>
+        </form>
+        <form action={cancelTwoFactor} className="mt-4 text-center">
+          <button type="submit" className="text-xs font-semibold text-muted-foreground hover:text-black">Start again / send a new code</button>
+        </form>
       </Shell>
     );
   }

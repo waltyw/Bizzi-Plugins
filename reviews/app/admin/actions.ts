@@ -9,6 +9,7 @@ import { generateLicenseKey } from '@/lib/stripe';
 import { isPlan } from '@/lib/pricing';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { ADMIN_COOKIE, adminToken, isAdmin, passwordMatches } from '@/lib/admin-auth';
+import { clearPendingTwoFactor, codeMatches, hasPendingTwoFactor, mailConfigured, startTwoFactor } from '@/lib/admin-2fa';
 
 const DURATIONS: Record<string, number | null> = { '1m': 31, '3m': 92, '1y': 368, '2y': 733, lifetime: null };
 
@@ -19,7 +20,26 @@ export async function login(formData: FormData) {
     const password = String(formData.get('password') ?? '');
     if (!rateLimit(`admin-login:${ip}`, 5, 15 * 60_000)) outcome = '/admin?error=locked';
     else if (!passwordMatches(password)) outcome = '/admin?error=wrong';
+    else if (!mailConfigured()) outcome = '/admin?error=mailsetup';
+    else await startTwoFactor();
+  } catch (err) {
+    console.error('Admin login failed', err);
+    outcome = '/admin?error=mailfail';
+  }
+  redirect(outcome);
+}
+
+export async function verifyCode(formData: FormData) {
+  let outcome = '/admin';
+  try {
+    const ip = clientIp(await headers());
+    if (!rateLimit(`admin-2fa:${ip}`, 5, 15 * 60_000)) {
+      await clearPendingTwoFactor();
+      outcome = '/admin?error=locked';
+    } else if (!(await hasPendingTwoFactor())) outcome = '/admin?error=expired';
+    else if (!(await codeMatches(String(formData.get('code') ?? '')))) outcome = '/admin?error=badcode';
     else {
+      await clearPendingTwoFactor();
       (await cookies()).set(ADMIN_COOKIE, adminToken(), {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -29,10 +49,15 @@ export async function login(formData: FormData) {
       });
     }
   } catch (err) {
-    console.error('Admin login failed', err);
+    console.error('Admin 2FA failed', err);
     outcome = '/admin?error=server';
   }
   redirect(outcome);
+}
+
+export async function cancelTwoFactor() {
+  await clearPendingTwoFactor();
+  redirect('/admin');
 }
 
 export async function logout() {
